@@ -148,15 +148,14 @@ end)
 -- =====================
 -- Rank-aware spell parsing
 -- =====================
--- Split a spec like "Holy Light(Rank 4)" → base="Holy Light", reqRank="Rank 4"
--- Tolerant of spaces and case ("rank", "RANK") and extra whitespace.
 local function SplitNameAndRank(spellSpec)
     if not spellSpec then return nil, nil end
-    local base, rnum = string_find(spellSpec, "^(.-)%s*%(%s*[Rr][Aa][Nn][Kk]%s*(%d+)%s*%)%s*$")
+    -- string.find returns: start, finish, CAP1, CAP2, ...
+    local _, _, base, rnum = string_find(spellSpec, "^(.-)%s*%(%s*[Rr][Aa][Nn][Kk]%s*(%d+)%s*%)%s*$")
     if base then
         return (string.gsub(base, "%s+$", "")), ("Rank " .. rnum)
     end
-    return spellSpec, nil
+    return (string.gsub(spellSpec, "%s+$", "")), nil
 end
 
 -- =====================
@@ -397,3 +396,4 @@ SlashCmdList["CONSECLIBRAM"] = function(msg)
     local active = (LibramConsecrationMode == "farraki") and CONSECRATION_FARRAKI or CONSECRATION_FAITHFUL
     DEFAULT_CHAT_FRAME:AddMessage("|cFFAAAAFF[LibramSwap]: Consecration libram set to|r " .. active)
 end
+
