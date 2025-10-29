@@ -117,7 +117,7 @@ local function BuildBagIndex()
                 local link = GetContainerItemLink(bag, slot)
                 if link then
                     -- Extract plain item name safely
-                    local _, _, bracketName = string.find(link, "%[(.-)%]")
+                    local _, _, bracketName = string_find(link, "%[(.-)%]")
                     if bracketName and WatchedNames[bracketName] then
                         NameIndex[bracketName] = { bag = bag, slot = slot, link = link }
                         local id = ItemIDFromLink(link)
@@ -212,7 +212,7 @@ local function HasItemInBags(itemName)
         if slots and slots > 0 then
             for slot = 1, slots do
                 local link = GetContainerItemLink(bag, slot)
-                if link and string_find(link, itemName, 1, true) then
+                if link and string.find(link, itemName, 1, true) then
                     -- Update cache so future lookups are O(1)
                     NameIndex[itemName] = { bag = bag, slot = slot, link = link }
                     local id = ItemIDFromLink(link)
