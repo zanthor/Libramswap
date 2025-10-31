@@ -54,9 +54,18 @@ local PER_SPELL_THROTTLE = {
 local CONSECRATION_FAITHFUL = "Libram of the Faithful"
 local CONSECRATION_FARRAKI  = "Libram of the Farraki Zealot"
 
--- Runtime toggle for which libram to use on Consecration ("faithful" or "farraki")
+-- Holy Strike libram choices
+local HOLY_STRIKE_ETERNAL_TOWER = "Libram of the Eternal Tower"
+local HOLY_STRIKE_RADIANCE  = "Libram of Radiance"
+
+-- Runtime toggle for which librams to use for spells with multiple options
+-- Consecration: ("faithful" or "farraki")
+-- Holy Strike: ("eternal" or "radiance")
 -- (Session-only; add to SavedVariables in the TOC if you want it to persist between logins.)
 LibramConsecrationMode = LibramConsecrationMode or "faithful"
+LibramHolyStrikeMode = LibramHolyStrikeMode or "eternal"
+
+
 
 -- Map spells -> preferred libram name (bag/equipped link substring match)
 local LibramMap = {
@@ -307,6 +316,20 @@ local function ResolveLibramForSpell(spellName)
         end
     end
 
+    -- Special handling: Holy Strike libram is user-selectable
+    if spellName == "Holy Strike" then
+        local mode = (LibramHolyStrikeMode == "eternal") and "eternal" or "radiance"
+        if mode == "eternal" then
+            if HasItemInBags(HOLY_STRIKE_ETERNAL_TOWER) then return HOLY_STRIKE_ETERNAL_TOWER end
+            if HasItemInBags(HOLY_STRIKE_RADIANCE) then return HOLY_STRIKE_RADIANCE end
+            return nil
+        else
+            if HasItemInBags(HOLY_STRIKE_RADIANCE) then return HOLY_STRIKE_RADIANCE end
+            if HasItemInBags(HOLY_STRIKE_ETERNAL_TOWER) then return HOLY_STRIKE_ETERNAL_TOWER end
+            return nil
+        end
+    end
+
     local libram = LibramMap[spellName]
     if not libram then return nil end
 
@@ -395,5 +418,24 @@ SlashCmdList["CONSECLIBRAM"] = function(msg)
     end
     local active = (LibramConsecrationMode == "farraki") and CONSECRATION_FARRAKI or CONSECRATION_FAITHFUL
     DEFAULT_CHAT_FRAME:AddMessage("|cFFAAAAFF[LibramSwap]: Consecration libram set to|r " .. active)
+end
+
+-- Toggle/select libram used for Holy Strike
+SLASH_HOLYSTRIKELIBRAM1 = "/holystrikelibram"
+SLASH_HOLYSTRIKELIBRAM2 = "/hslibram"
+SlashCmdList["HOLYSTRIKELIBRAM"] = function(msg)
+    msg = string.lower(tostring(msg or ""))
+    if msg == "radiance" or msg == "r" then
+        LibramConsecrationMode = "radiance"
+    elseif msg == "eternal" or msg == "e" then
+        LibramConsecrationMode = "eternal"
+    elseif msg == "toggle" or msg == "" then
+        LibramConsecrationMode = (LibramConsecrationMode == "radiance") and "eternal" or "radiance"
+    else
+        DEFAULT_CHAT_FRAME:AddMessage("|cFFAAAAFF[LibramSwap]: /holystrikelibram [radiance|eternal|toggle]|r")
+        return
+    end
+    local active = (LibramConsecrationMode == "eternal") and HOLY_STRIKE_ETERNAL_TOWER or HOLY_STRIKE_RADIANCE
+    DEFAULT_CHAT_FRAME:AddMessage("|cFFAAAAFF[LibramSwap]: Holy Strike libram set to|r " .. active)
 end
 
