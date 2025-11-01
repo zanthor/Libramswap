@@ -156,6 +156,7 @@ LibramSwapFrame:SetScript("OnEvent", function(_, event)
     elseif event == "BAG_UPDATE" then
         -- simple & safe: rebuild immediately (cost is tiny since we only watch librams)
         BuildBagIndex()
+    end
 end)
 
 -- =====================
