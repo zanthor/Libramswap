@@ -48,7 +48,7 @@ local lastSwapTime = 0
 
 -- Initialize saved variables with defaults
 LibramSwapDb = LibramSwapDb or {
-    enabled = false,
+    enabled = true,
     spam = true,
     -- Runtime toggle for which librams to use for spells with multiple options
     -- Consecration: ("faithful" or "farraki")
