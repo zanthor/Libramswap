@@ -17,7 +17,6 @@ All commands support three aliases: `/libramswap`, `/lswap`, or `/ls`
 - `/ls help` - Show command list
 
 ### Libram Selection
-
 Some spells have multiple libram options. You can choose which one to use:
 
 #### Consecration
@@ -27,6 +26,9 @@ Some spells have multiple libram options. You can choose which one to use:
 #### Holy Strike
 - `/ls holystrike eternal` or `/ls hs e` - Use **Libram of the Eternal Tower** (default)
 - `/ls holystrike radiance` or `/ls hs r` - Use **Libram of Radiance**
+
+### Note
+`/ls` may conflict with LazyScript - if it does for you, use `/lswap` instead.
 
 ## Supported Spells & Librams
 
