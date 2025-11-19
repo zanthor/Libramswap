@@ -340,7 +340,9 @@ local function EquipLibramForSpell(spellName, itemName)
         if CursorHasItem and CursorHasItem() then
             return false
         end
-        UseContainerItem(bag, slot)
+        --UseContainerItem(bag, slot)
+        PickupContainerItem(bag, slot)
+        EquipCursorItem(18)
         lastEquippedLibram = itemName
         if perDur then
             -- mark first swap and update per-spell timestamp
