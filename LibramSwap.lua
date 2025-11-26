@@ -591,5 +591,6 @@ end
 -- Register slash command variants
 SLASH_LIBRAMSWAP1 = "/libramswap"
 SLASH_LIBRAMSWAP2 = "/lswap"
+--SLASH_LIBRAMSWAP3 = "/ls"
 SlashCmdList["LIBRAMSWAP"] = HandleLibramSwapCommand
 
